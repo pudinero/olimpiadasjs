@@ -8,8 +8,8 @@ var fs = require('fs');
 
 var connection = mysql.createConnection({
 	host     : 'localhost',
-	user     : 'root',
-	password : '12345',
+	user     : 'user',
+	password : 'pass',
 	database : 'nodelogin'
 });
 
@@ -26,28 +26,23 @@ app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
 
 app.get('/', function(request, response) {
-	//response.sendFile(path.join(__dirname + '/login.html'));
 	response.render('index', { formTitle: 'Iniciar sesión'});
 });
 
 app.post('/auth', function(request, response) {
-	global.username = request.body.username;
+	var username = request.body.username;
 	var password = request.body.psw;
-
-  	console.log(username);
-	console.log(password);
-	  
 	if (username && password) {
 		connection.query('SELECT * FROM accounts WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
 			if (results.length > 0) {
 				request.session.loggedin = true;
-		request.session.username = username;
-		console.log(username);
-
-        fs.writeFile('table.json', JSON.stringify(results), function (err) {
-        	if (err) throw err;
-          console.log('Saved!');
-        });
+				request.session.username = username;
+				
+				/*
+        			fs.writeFile('table.json', JSON.stringify(results), function (err) {
+        				if (err) throw err;
+          				console.log('table.json saved!');
+        			});*/
 				
 				response.redirect('./home')
 			} else {
