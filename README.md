@@ -35,6 +35,7 @@ sudo npm install pug
     | indexWarning.pug
     | authFail.pug
     | home.pug
+  | package.json
 ```
 - Si desea usarlo en conjunto con Apache instale ```pm2``` y configure el archivo ```/etc/apache2/sites-available/000-default.conf```
 ```
